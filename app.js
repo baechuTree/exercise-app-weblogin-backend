@@ -4,10 +4,10 @@ const folderRoutes = require("./routes/folderRoutes");
 const recordRoutes = require("./routes/recordRoutes");
 const userRoutes = require("./routes/userRoutes");
 const cors = require('cors');
+require("dotenv").config();
 
 // 애플리케이션 초기화
 const app = express();
-const PORT = 5000;
 
 // MongoDB 연결
 connectDB();
@@ -18,8 +18,7 @@ app.use(express.json());
 // **CORS 설정 추가: 특정 주소(=출처)에서 오는 요청을 받아들이게 함
 //   지금은 프론트엔드 서버에서 오는 요청을 받아들이기 위해 사용
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://192.168.35.158:3000'], // 허용할 출처
-    //**배포 시 프론트엔드의 도메인 이름이 달라진다면, 그 도메인으로 바꿔줘야 함
+  origin: [ process.env.FRONTEND_URL ], // 허용할 출처. 프론트엔드 도메인을 넣어주자
   methods: ['GET', 'POST', 'PUT', 'DELETE'], // 허용할 HTTP 메서드
   credentials: true, // 쿠키 등을 포함한 요청 허용
 }));
@@ -35,6 +34,6 @@ app.get("/", (req, res) => {
 });
 
 // 서버 실행
-app.listen(PORT, () => {
-  console.log(`http://localhost:${PORT} 에서 서버 실행 중...`);
+app.listen(process.env.PORT, () => {
+  console.log(`서버 실행 중...`);
 });
